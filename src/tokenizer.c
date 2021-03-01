@@ -31,7 +31,6 @@ char *word_start(char *str)
 char *word_terminator(char *word)
 {
   while(non_space_char(*word)) word++;
-  *word = '\0';
   return word;
 }
 
@@ -59,9 +58,37 @@ char *copy_str(char *inStr, short len)
   return ptr;
 }
 
+char **tokenize(char *s)
+{
+  int numWords = count_words(s);
+  char **tokens=(char**)malloc((numWords+1)*sizeof(char*));
+  if (tokens == NULL) printf("Memory not allocated.\n");
+
+  if (space_char(*s)) s = word_start(s);
+  for(int i = 0; i < numWords; i++) {
+    char *wordHead = s;
+    char *wordTail = word_terminator(wordHead);
+    short wordLen = wordTail-wordHead;
+    char *wordToken = copy_str(wordHead, wordLen);
+    printf("tokens[%i] = \"%s\"\n",i, wordToken);
+    *(tokens+i) = wordToken;
+    s=word_start(s);
+    }
+  char *wordTerminator = copy_str('\0', 0);
+  *(tokens+numWords) = wordTerminator;
+  return tokens;
+}
+
+
 void print_tokens(char **s)
 {
-  
+  int count = 0;
+  while (**s != '\0') {
+    char *currWord = *s+count;
+    printf("tokens[%i] = \"%s\"\n", count,currWord);
+    s++;
+    count++;
+  }
 }
 
 void free_tokens(char **s)
@@ -69,8 +96,3 @@ void free_tokens(char **s)
   
 }
 
-char **tokenize(char *s)
-{
-  
-  return 0;
-}
