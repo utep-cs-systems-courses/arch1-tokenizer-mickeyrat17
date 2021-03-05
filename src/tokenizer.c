@@ -70,7 +70,6 @@ char **tokenize(char *s)
     char *wordTail = word_terminator(wordHead);
     short wordLen = wordTail-wordHead;
     char *wordToken = copy_str(wordHead, wordLen);
-    printf("tokens[%i] = \"%s\"\n",i, wordToken);
     *(tokens+i) = wordToken;
     s=word_start(s);
     }
@@ -84,7 +83,7 @@ void print_tokens(char **s)
 {
   int count = 0;
   while (**s != '\0') {
-    char *currWord = *s+count;
+    char *currWord = *s;
     printf("tokens[%i] = \"%s\"\n", count,currWord);
     s++;
     count++;
@@ -93,6 +92,11 @@ void print_tokens(char **s)
 
 void free_tokens(char **s)
 {
-  
+  char **head = s;
+  while (**s != '\0') {
+    free(*s);
+    s++;
+  }
+  free(head);
 }
 

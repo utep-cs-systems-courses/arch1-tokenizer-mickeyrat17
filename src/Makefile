@@ -1,12 +1,16 @@
 CFLAGS=-g -O3
 
-all: tokenizer
+all: history
 
 tokenizer.o: tokenizer.h
-uimain.o: tokenizer.h
+history.o: history.h
+uimain.o: tokenizer.h history.h
 
-tokenizer: tokenizer.o uimain.o
+history: tokenizer.o history.o uimain.o
 	cc -o $@ $^ $(CFLAGS)
 
 clean:
-	rm -f *.o tokenizer
+	rm -f *.o history
+
+run: history
+	./history
